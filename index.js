@@ -51,11 +51,13 @@ io.on('connection', socket => {
 			roomByUsername[user2.username] = room_name;
 
 			io.to(room_name).emit('message', 'Both players ready. Game starting in 10!');
-			setTimeout(() => {
-				const gameData = initGame(user1, user2);
-				gameDataByRoom[room_name] = gameData;
-				io.to(room_name).emit('message', JSON.stringify({ gameData }));
-			}, 10000);
+			
+			const gameData = initGame([ user1.username, user2.username ]);
+			console.log(gameData);
+			gameDataByRoom[room_name] = gameData;
+			io.to(room_name).emit('game_update', gameData);
+			// setTimeout(() => {
+			// }, 10000);
 		}
 	});
 
